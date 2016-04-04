@@ -26,7 +26,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN a2enmod rewrite
 
 # Disable apache default sites
-RUN a2dissite default 000-default
+RUN a2dissite 000-default
 
 # Install Tine 2.0 to /tine20 folder
 RUN mkdir -p /tine20/cache
