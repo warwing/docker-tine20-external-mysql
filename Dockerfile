@@ -37,7 +37,7 @@ RUN mkdir -p /tine20/log
 RUN mkdir -p /tine20/tmp
 ADD https://github.com/tine20/Tine-2.0-Open-Source-Groupware-and-CRM/archive/$TINE20_VERSION.zip /tmp/tine20-$TINE20_VERSION.zip
 RUN cd /tine20/web_docroot && unzip /tmp/tine20-$TINE20_VERSION.zip && rm /tmp/tine20-$TINE20_VERSION.zip && \
-    mv Tine-2.0-Open-Source-Groupware-and-CRM-2016.03/* ./ && rm -rf Tine-2.0-Open-Source-Groupware-and-CRM-2016.03/ 
+    mv Tine-2.0-Open-Source-Groupware-and-CRM-2016.03/tine20/* ./ && rm -rf Tine-2.0-Open-Source-Groupware-and-CRM-2016.03/ 
 
 
 # Tine 2.0 Vhost
