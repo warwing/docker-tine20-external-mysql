@@ -48,13 +48,13 @@ RUN cd /tine20/web_docroot && unzip /tmp/tine20-allinone_$TINE20_VERSION.zip && 
 
 # Tine 2.0 Vhost
 COPY tine20-vhost.conf /tine20/conf_templates/ 
-RUN cat /tmp/tine20-vhost.conf | \
+RUN cat /tine20/conf_templates/tine20-vhost.conf | \
        sed "s/__SERVER_NAME__/$TINE20_SERVER_NAME/g" | \
        sed "s/__SERVER_ALIAS__/$TINE20_SERVER_ALIAS/g" > /etc/apache2/sites-available/tine20.conf
 
 # Tine 2.0 config
-COPY config.inc.php /tmp/
-RUN cat /tmp/config.inc.php | \
+COPY config.inc.php /tine20/conf_templates/ 
+RUN cat /tine20/conf_templates/config.inc.php | \
        sed "s/__TINE20_DB_HOST__/$TINE20_DB_HOST/g" | \
        sed "s/__TINE20_DB_USER__/$TINE20_DB_USER/g" | \
        sed "s/__TINE20_DB_PASS__/$TINE20_DB_PASS/g" | \
