@@ -19,7 +19,11 @@ ENV TINE20_SETUP_PASS please_set_env_variable
 RUN apt-get update
 
 # install required packages
-RUN apt-get -y install apache2 curl less libapache2-mod-php5 php5 php5-curl php5-gd php5-mysql php5-xsl php-mcrypt php-pear php-xdebug sed unzip
+# Ubuntu 16.04
+# RUN apt-get -y install apache2 curl less libapache2-mod-php5 php5 php5-curl php5-gd php5-mysql php5-xsl php-mcrypt php-pear php-xdebug sed unzip
+# Ubuntu 14.04.3
+# RUN apt-get -y install apache2 curl less libapache2-mod-php5 php5 php5-curl php5-gd php5-mysql php5-xsl php5-mcrypt php-pear php5-xdebug sed unzip
+
 
 # remove download archive files
 RUN apt-get clean
@@ -29,6 +33,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Allow modules for Apache.
 RUN a2enmod rewrite
+
+# Update mcrypt for Ubuntu 14.04.3
+RUN php5enmod mcrypt
 
 # Disable apache default sites
 RUN a2dissite 000-default
@@ -40,9 +47,8 @@ RUN mkdir -p /tine20/web_docroot
 RUN mkdir -p /tine20/files
 RUN mkdir -p /tine20/log
 RUN mkdir -p /tine20/tmp
-ADD https://github.com/tine20/Tine-2.0-Open-Source-Groupware-and-CRM/archive/$TINE20_VERSION.zip /tmp/tine20-$TINE20_VERSION.zip
-RUN cd /tine20/web_docroot && unzip /tmp/tine20-$TINE20_VERSION.zip && rm /tmp/tine20-$TINE20_VERSION.zip && \
-    mv Tine-2.0-Open-Source-Groupware-and-CRM-2016.03/tine20/* ./ && rm -rf Tine-2.0-Open-Source-Groupware-and-CRM-2016.03/ 
+ADD http://packages.tine20.org/source/$TINE20_VERSION/tine20-allinone_$TINE20_VERSION.zip /tmp/tine20-allinone_$TINE20_VERSION.zip
+RUN cd /tine20/web_docroot && unzip /tmp/tine20-allinone_$TINE20_VERSION.zip && rm /tmp/tine20-allinone_$TINE20_VERSION.zip 
 
 
 # Tine 2.0 Vhost
@@ -59,4 +65,11 @@ RUN cat /tmp/config.inc.php | \
        sed "s/__TINE20_DB_PASS__/$TINE20_DB_PASS/g" | \
        sed "s/__TINE20_SETUP_USER__/$TINE20_SETUP_USER/g" | \
        sed "s/__TINE20_SETUP_PASS__/$TINE20_SETUP_PASS/g" > /tine20/etc/config.inc.php
+
+RUN chown -R www-data:www-data /tine20
+
+RUN a2ensite tine20
+RUN service apache2 restart
+
+# Updating existing installation: php -d include_path=/tine20/etc setup.php --update
        

@@ -1,4 +1,7 @@
 <?php return array(
+	// set 'count' equal zero to disable captcha, or set to number of invalid logins before request captcha.
+    'captcha' => array('count'=>4),
+    
     'database' => array(
         'host'          => '__TINE20_DB_HOST__',
         'dbname'        => 'tine20',
