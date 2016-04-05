@@ -9,6 +9,11 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV TINE20_VERSION 2016.03
 ENV TINE20_SERVER_NAME localhost
 ENV TINE20_SERVER_ALIAS localhost
+ENV TINE20_DB_HOST 172.17.0.1
+ENV TINE20_DB_USER
+ENV TINE20_DB_PASS
+ENV TINE20_SETUP_USER
+ENV TINE20_SETUP_PASS
 
 # update dpkg repositories
 RUN apt-get update
@@ -46,3 +51,12 @@ RUN cat /tmp/tine20-vhost.conf | \
        sed "s/__SERVER_NAME__/$TINE20_SERVER_NAME/g" | \
        sed "s/__SERVER_ALIAS__/$TINE20_SERVER_ALIAS/g" > /etc/apache2/sites-available/tine20.conf
 
+# Tine 2.0 config
+COPY config.inc.php /tmp/
+RUN cat /tmp/config.inc.php | \
+       sed "s/__TINE20_DB_HOST__/$TINE20_DB_HOST/g" | \
+       sed "s/__TINE20_DB_USER__/$TINE20_DB_USER/g" | \
+       sed "s/__TINE20_DB_PASS__/$TINE20_DB_PASS/g" | \
+       sed "s/__TINE20_SETUP_USER__/$TINE20_SETUP_USER/g" | \
+       sed "s/__TINE20_SETUP_PASS__/$TINE20_SETUP_PASS/g" > /tine20/etc/config.inc.php
+       

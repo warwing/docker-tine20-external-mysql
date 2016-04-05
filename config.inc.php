@@ -1,6 +1,6 @@
 <?php return array(
     'database' => array(
-        'host'          => 'localhost',
+        'host'          => '__TINE20_DB_HOST__',
         'dbname'        => 'tine20',
         'username'      => '__TINE20_DB_USER__',
         'password'      => '__TINE20_DB_PASS__',
