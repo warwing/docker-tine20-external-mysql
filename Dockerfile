@@ -10,10 +10,10 @@ ENV TINE20_VERSION 2016.03
 ENV TINE20_SERVER_NAME localhost
 ENV TINE20_SERVER_ALIAS localhost
 ENV TINE20_DB_HOST 172.17.0.1
-ENV TINE20_DB_USER
-ENV TINE20_DB_PASS
-ENV TINE20_SETUP_USER
-ENV TINE20_SETUP_PASS
+ENV TINE20_DB_USER please_set_env_variable
+ENV TINE20_DB_PASS please_set_env_variable
+ENV TINE20_SETUP_USER please_set_env_variable
+ENV TINE20_SETUP_PASS please_set_env_variable
 
 # update dpkg repositories
 RUN apt-get update
