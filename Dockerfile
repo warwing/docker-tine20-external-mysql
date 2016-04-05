@@ -6,14 +6,14 @@ MAINTAINER warwing@gmx.de
 ENV DEBIAN_FRONTEND noninteractive
 
 # CONFIGURATION VARIABLES
-ENV TINE20_VERSION 2016.03.1
-ENV TINE20_SERVER_NAME localhost
-ENV TINE20_SERVER_ALIAS localhost
-ENV TINE20_DB_HOST 172.17.0.1
-ENV TINE20_DB_USER please_set_env_variable
-ENV TINE20_DB_PASS please_set_env_variable
-ENV TINE20_SETUP_USER please_set_env_variable
-ENV TINE20_SETUP_PASS please_set_env_variable
+ARG TINE20_VERSION=2016.03.1
+ARG TINE20_SERVER_NAME=localhost
+ARG TINE20_SERVER_ALIAS=localhost
+ARG TINE20_DB_HOST=172.17.0.1
+ARG TINE20_DB_USER
+ARG TINE20_DB_PASS
+ARG TINE20_SETUP_USER
+ARG TINE20_SETUP_PASS
 
 # update dpkg repositories
 RUN apt-get update
@@ -41,18 +41,13 @@ RUN php5enmod mcrypt
 RUN a2dissite 000-default
 
 # Install Tine 2.0 to /tine20 folder
-RUN mkdir -p /tine20/cache
-RUN mkdir -p /tine20/etc
-RUN mkdir -p /tine20/web_docroot
-RUN mkdir -p /tine20/files
-RUN mkdir -p /tine20/log
-RUN mkdir -p /tine20/tmp
+RUN mkdir -p /tine20/cache /tine20/conf_templates /tine20/etc /tine20/web_docroot /tine20/files /tine20/log /tine20/tmp
 ADD http://packages.tine20.org/source/$TINE20_VERSION/tine20-allinone_$TINE20_VERSION.zip /tmp/tine20-allinone_$TINE20_VERSION.zip
 RUN cd /tine20/web_docroot && unzip /tmp/tine20-allinone_$TINE20_VERSION.zip && rm /tmp/tine20-allinone_$TINE20_VERSION.zip 
 
 
 # Tine 2.0 Vhost
-COPY tine20-vhost.conf /tmp/ 
+COPY tine20-vhost.conf /tine20/conf_templates/ 
 RUN cat /tmp/tine20-vhost.conf | \
        sed "s/__SERVER_NAME__/$TINE20_SERVER_NAME/g" | \
        sed "s/__SERVER_ALIAS__/$TINE20_SERVER_ALIAS/g" > /etc/apache2/sites-available/tine20.conf
@@ -71,5 +66,13 @@ RUN chown -R www-data:www-data /tine20
 RUN a2ensite tine20
 RUN service apache2 restart
 
+ADD run-apache-with-stdout-logging.sh /tine20/run-apache-with-stdout-logging.sh
+RUN chmod 755 /tine20/run-apache-with-stdout-logging.sh
+
+EXPOSE 80
+
+WORKDIR /tine20
+
+CMD ["/tine20/run-apache-with-stdout-logging.sh"]
+
 # Updating existing installation: php -d include_path=/tine20/etc setup.php --update
-       
