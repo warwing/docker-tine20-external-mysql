@@ -22,7 +22,7 @@ RUN apt-get update
 # Ubuntu 16.04
 # RUN apt-get -y install apache2 curl less libapache2-mod-php5 php5 php5-curl php5-gd php5-mysql php5-xsl php-mcrypt php-pear php-xdebug sed unzip
 # Ubuntu 14.04.3
-# RUN apt-get -y install apache2 curl less libapache2-mod-php5 php5 php5-curl php5-gd php5-mysql php5-xsl php5-mcrypt php-pear php5-xdebug sed unzip
+RUN apt-get -y install apache2 curl less libapache2-mod-php5 php5 php5-curl php5-gd php5-mysql php5-xsl php5-mcrypt php-pear php5-xdebug sed unzip
 
 
 # remove download archive files
