@@ -17,7 +17,7 @@ selected settings directly via terminal without any impact on the folder structu
 If the test doesn't work I can just delete the container.
 
 ## Target environment
-* Synology DSM 6 with installed MySQL server
+* Synology DSM 6 with installed MySQL and mail server
 * Let's encrypt certificats
 * Tine accessible under specific subdomain - published via reverse proxy
 
