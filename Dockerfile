@@ -45,6 +45,8 @@ RUN mkdir -p /tine20/cache /tine20/conf_templates /tine20/etc /tine20/web_docroo
 ADD http://packages.tine20.org/source/$TINE20_VERSION/tine20-allinone_$TINE20_VERSION.zip /tmp/tine20-allinone_$TINE20_VERSION.zip
 RUN cd /tine20/web_docroot && unzip /tmp/tine20-allinone_$TINE20_VERSION.zip && rm /tmp/tine20-allinone_$TINE20_VERSION.zip 
 
+# Implement hack to support contacts of OS X El Capitan
+COPY FindAddressbookContainer.php /tine20/web_docroot/FindAddressbookContainer.php
 
 # Tine 2.0 Vhost
 COPY tine20-vhost.conf /tine20/conf_templates/ 
